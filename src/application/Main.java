@@ -1,12 +1,13 @@
 package application;
 
+import javafx.animation.Animation;
+import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -19,7 +20,6 @@ import javafx.scene.control.Spinner;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -72,6 +72,7 @@ public class Main extends Application {
 	int blockSize; // size of each cell
 	Color passageColor;
 	Color wallColor;
+	Scene scene1, scene2, scene3;
 
 	// animation stuff
 //	int sleepTime = 5; // wait time after solving one maze before making another, in milliseconds
@@ -87,24 +88,33 @@ public class Main extends Application {
 
 		Group group = new Group(menu);
 
-		VBox container1 = new VBox();
-		Scene scene1 = new Scene(container1, 1000, 600);
-		Scene scene2 = new Scene(group, scene1.getWidth(), scene1.getHeight());
+//		VBox container1 = new VBox();
+		Group container1 = new Group();
+		scene1 = new Scene(container1, 1366, 707);
+		scene2 = new Scene(group, scene1.getWidth(), scene1.getHeight());
 
 		// Scene 1
 		Label label1 = new Label("Maze Runner");
 		label1.setTextFill(Color.CORNFLOWERBLUE);
 		label1.setFont(new Font("forte", 105));
-		;
+		label1.setLayoutX((scene1.getWidth() / 2) - 280);
+		label1.setLayoutY(200);
 
 		Label label2 = new Label("Press Any Key to Continue");
 		Font welcomeFont = Font.font("Agency FB", FontWeight.BOLD, 30);
 		label2.setFont(welcomeFont);
-		;
+		label2.setLayoutX(scene1.getWidth() / 2 - 90);
+		label2.setLayoutY(340);
 		label2.setTextFill(Color.GREY);
 
+		FadeTransition ft = new FadeTransition(Duration.seconds(3), label2);
+		ft.setFromValue(1);
+		ft.setToValue(0);
+		ft.setCycleCount(Animation.INDEFINITE);
+		ft.play();
+
 		container1.getChildren().addAll(label1, label2);
-		container1.setAlignment(Pos.CENTER);
+//		container1.setAlignment(Pos.CENTER);
 
 		scene1.setOnKeyPressed((KeyEvent ke) -> stage.setScene(scene2));
 
@@ -230,7 +240,8 @@ public class Main extends Application {
 
 				group2.getChildren().addAll(solveMazeBtn, mainMenuBtn);
 
-				Scene scene3 = new Scene(group2, scene1.getWidth(), scene1.getHeight());
+				scene3 = new Scene(group2, scene1.getWidth(), scene1.getHeight());
+				scene3.setFill(Color.PAPAYAWHIP);
 
 				stage.setScene(scene3);
 
@@ -239,8 +250,11 @@ public class Main extends Application {
 			}
 		});
 
+		scene1.setFill(Color.PAPAYAWHIP);
+		scene2.setFill(Color.PAPAYAWHIP);
 		stage.setScene(scene1);
-		stage.setResizable(true);
+		stage.setResizable(false);
+//		stage.setFullScreen(true);
 		stage.setTitle("Maze Runner");
 		stage.show();
 
